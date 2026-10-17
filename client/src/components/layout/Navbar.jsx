@@ -4,10 +4,12 @@ import { Search, ShoppingCart, User, Menu } from 'lucide-react';
 import storeConfig from '../../config/storeConfig';
 import MobileMenu from './MobileMenu';
 import {useCart} from '../../hooks/useCart';
+import {useAuthContext} from '../../hooks/useAuthContext'
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const {itemCount} = useCart();
+  const {user} = useAuthContext();
 
   return (
     <header className="sticky top-0 z-40 bg-white border-b border-ink-300/50">
@@ -30,7 +32,8 @@ function Navbar() {
         </div>
 
         <div className="flex items-center gap-4 ml-auto">
-          <Link to="/profile" className="hidden sm:flex items-center gap-1 text-sm text-ink-700 hover:text-ink-900">
+          <Link to={user?'/profile':'/login'}
+           className="hidden sm:flex items-center gap-1 text-sm text-ink-700 hover:text-ink-900">
             <User size={20} />
           </Link>
           <Link to="/cart" className="relative flex items-center">
