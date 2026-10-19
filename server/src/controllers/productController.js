@@ -2,9 +2,13 @@ import Product from "../models/Product.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
 export const getProducts = asyncHandler(async (req, res) => {
-  const { category, search, maxPrice, sort, page = 1, limit = 20 } = req.query;
+  const { category, search, maxPrice, sort,isFeatured,isBestSeller, page = 1, limit = 20 } = req.query;
 
   const filter = { isActive: true };
+  
+  // if(isFeatured==='true') filter.isFeatured = true;
+  // if(isBestSeller==='true') filter.isBestSeller = true;
+
   if (category) {
     const Category = (await import("../models/Category.js")).default;
     const cat = await Category.findOne({ slug: category });

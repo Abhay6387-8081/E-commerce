@@ -6,14 +6,15 @@ import bcrypt from 'bcryptjs';
 import User from '../models/User.js';
 
 async function createAdmin(){
-    if(!process.env.ADMIN_EMAIL||process.env.ADMIN_PASSWORD){
+    if(!process.env.ADMIN_EMAIL||!process.env.ADMIN_PASSWORD){
         console.error('set ADMIN_EMAIL and ADMIN_PASSWORD in your .env file first.');
+        process.exit(0);
     }
 
     await mongoose.connect(process.env.MONGO_URI);
 
     const existing = await User.findOne({email:process.env.ADMIN_EMAIL.toLowerCase()});
-    if(!existing){
+    if(existing){
         console.log('An account with this email already exists. Exiting without changes.');
         process.exit(0);
     }

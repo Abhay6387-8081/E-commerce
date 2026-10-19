@@ -7,7 +7,7 @@ function Home() {
     <div>
       <HeroBanner />
       <CategoryGrid />
-      <FeaturedProducts title="Featured Products" filterKey="isFeatured" />
+      <FeaturedProducts title="Featured Products" filterKey="isFeatured" /> 
       <FeaturedProducts title="Best Sellers" filterKey="isBestSeller" />
     </div>
   );

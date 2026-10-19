@@ -1,20 +1,24 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Search, ShoppingCart, User, Menu } from 'lucide-react';
-import storeConfig from '../../config/storeConfig';
-import MobileMenu from './MobileMenu';
-import {useCart} from '../../hooks/useCart';
-import {useAuthContext} from '../../hooks/useAuthContext'
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { Search, ShoppingCart, User, Menu, Heart } from "lucide-react";
+import storeConfig from "../../config/storeConfig";
+import MobileMenu from "./MobileMenu";
+import { useCart } from "../../hooks/useCart";
+import { useAuthContext } from "../../hooks/useAuthContext";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const {itemCount} = useCart();
-  const {user} = useAuthContext();
+  const { itemCount } = useCart();
+  const { user } = useAuthContext();
 
   return (
     <header className="sticky top-0 z-40 bg-white border-b border-ink-300/50">
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center gap-4">
-        <button className="md:hidden" onClick={() => setMenuOpen(true)} aria-label="Open menu">
+        <button
+          className="md:hidden"
+          onClick={() => setMenuOpen(true)}
+          aria-label="Open menu"
+        >
           <Menu size={22} />
         </button>
 
@@ -23,17 +27,36 @@ function Navbar() {
         </Link>
 
         <div className="hidden md:flex flex-1 max-w-md relative">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-500" />
+          <Search
+            size={16}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-500"
+          />
           <input
             type="text"
             placeholder="Search for products..."
             className="w-full pl-9 pr-4 py-2 rounded-full border border-ink-300/60 text-sm focus:outline-none focus:border-brand-500"
           />
         </div>
-
+        {/* 
         <div className="flex items-center gap-4 ml-auto">
           <Link to={user?'/profile':'/login'}
            className="hidden sm:flex items-center gap-1 text-sm text-ink-700 hover:text-ink-900">
+            <User size={20} />
+          </Link>
+          <Link to="/cart" className="relative flex items-center"> */}
+
+        <div className="flex items-center gap-4 ml-auto">
+          <Link
+            to="/wishlist"
+            className="hidden sm:flex items-center"
+            aria-label="Wishlist"
+          >
+            <Heart size={20} className="text-ink-700" />
+          </Link>
+          <Link
+            to={user ? "/profile" : "/login"}
+            className="hidden sm:flex items-center gap-1 text-sm text-ink-700 hover:text-ink-900"
+          >
             <User size={20} />
           </Link>
           <Link to="/cart" className="relative flex items-center">

@@ -17,6 +17,16 @@ import OrderConfirmation from "./pages/OrderConfirmation";
 import OrderHistory from "./pages/OrderHistory";
 import OrderDetails from "./pages/Orderdetails";
 import ProtectedRoute from "./routes/ProtectedRoute";
+import AdminLayout from "./components/layout/AdminLayout";
+import AdminRoute from "./routes/AdminRoute";
+import Dashboard from "./pages/admin/Dasboard";
+import ProductManager from "./pages/admin/ProductManager";
+import ProductForm from "./pages/admin/ProductForm";
+import CategoryManager from "./pages/admin/CategoryManager";
+import OrderManager from "./pages/admin/OrderManager";
+import OrderDetailAdmin from "./pages/admin/OrderDetailAdmin";
+import CustomerList from "./pages/admin/CustomerList";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -34,6 +44,14 @@ function App() {
                   <Route path="/wishlist" element={<Wishlist />} />
                   <Route path="/login" element={<Login />} />
                   <Route path="/register" element={<Register />} />
+                  <Route
+                    path="/profile"
+                    element={
+                      <ProtectedRoute>
+                        <Profile />
+                      </ProtectedRoute>
+                    }
+                  />
                   <Route
                     path="/checkout"
                     element={
@@ -59,7 +77,7 @@ function App() {
                     }
                   />
                   <Route
-                    path="/order/:id"
+                    path="/orders/:id"
                     element={
                       <ProtectedRoute>
                         <OrderDetails />
@@ -67,6 +85,23 @@ function App() {
                     }
                   />
                   <Route path="*" element={<NotFound />} />
+                </Route>
+                <Route
+                  path="/admin"
+                  element={
+                    <AdminRoute>
+                      <AdminLayout />
+                    </AdminRoute>
+                  }
+                >
+                  <Route index element={<Dashboard />} />
+                  <Route path="products" element={<ProductManager />} />
+                  <Route path="products/new" element={<ProductForm />} />
+                  <Route path="products/:id/edit" element={<ProductForm />} />
+                  <Route path="categories" element={<CategoryManager />} />
+                  <Route path="orders" element={<OrderManager />} />
+                  <Route path="orders/:id" element={<OrderDetailAdmin />} />
+                  <Route path="customers" element={<CustomerList />} />
                 </Route>
               </Routes>
             </BrowserRouter>

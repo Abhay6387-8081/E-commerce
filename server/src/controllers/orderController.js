@@ -105,3 +105,36 @@ export const getOrderById = asyncHandler(async (req, res) => {
 
   res.json({ success: true, order });
 });
+
+export const getAllOrders = asyncHandler(async(req,res)=>{
+  const {status,page=1,limit=20} = req.query;
+  const filter = {};
+  if(status) filter.status =status;
+
+  const skip = (Number(page)-1)*Number(limit);
+
+  const [orders,total] = await Promise.all([
+    Order.find(filter).populate('user','name email').sort({createdAt:-1}).skip(skip).limit(Number(limit)),
+    Order.countDocuments(filter),
+  ]);
+
+  res.json({success:true,orders,pagination:{total,page:Number(page),pages:Math.ceil(total/Number(limit))}});
+});
+
+export const updateOrderStatus = asyncHandler(async(req,res)=>{
+  const {status} = req.body;
+  const validStatuses = ['pending','confirmed','shipped','delivered','cancelled'];
+
+  if(!validStatuses.includes(status)){
+    res.status(400);
+    throw new Error('Invalid order status.')
+  }
+
+  const order = await Order.findByIdAndUpdate(req.params.id,{status},{new:true});
+  if(!order) {
+    res.status(404);
+    throw new Error('Order not Found.');
+  }
+
+  res.json({success:true,order})
+})

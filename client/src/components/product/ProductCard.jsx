@@ -5,7 +5,7 @@ import { useCart } from '../../hooks/useCart';
 import { useWishlist } from '../../hooks/useWishlist';
 import { useToast } from '../../hooks/useToast';
 
-const FALLBACK_IMG = '/images/products/placeholder.jpg';
+const FALLBACK_IMG = '/images/products/placeholder.jpeg';
 
 function ProductCard({ product }) {
   const discount = calcDiscountPercent(product.price, product.mrp);
