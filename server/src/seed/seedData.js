@@ -6,7 +6,7 @@ import Category from "../models/Category.js";
 import Product from "../models/Product.js";
 
 const categories = [
-  // { name: "Atta & Flour", slug: "atta-flour" },
+  { name: "Atta & Flour", slug: "atta-flour" },
   { name: "Rice", slug: "rice" },
   { name: "Dal & Pulses", slug: "dal-pulses" },
   { name: "Edible Oils", slug: "edible-oils" },
@@ -29,37 +29,37 @@ function placeholderImg(text) {
 }
 
 const products = [
-  // {
-  //   name: "Premium Atta",
-  //   category: "atta-flour",
-  //   price: 285,
-  //   mrp: 320,
-  //   unit: "5 kg",
-  //   stock: 40,
-  //   imageUrl: placeholderImg("Atta 5kg"),
-  //   isFeatured: true,
-  //   isBestSeller: true,
-  //   rating: 4.3,
-  //   reviewCount: 128,
-  // },
-  // {
-  //   name: "Whole Wheat Flour",
-  //   category: "atta-flour",
-  //   price: 240,
-  //   mrp: 260,
-  //   unit: "5 kg",
-  //   stock: 30,
-  //   imageUrl: placeholderImg("Wheat Flour"),
-  // },
-  // {
-  //   name: "Maida",
-  //   category: "atta-flour",
-  //   price: 60,
-  //   mrp: 68,
-  //   unit: "1 kg",
-  //   stock: 50,
-  //   imageUrl: placeholderImg("Maida"),
-  // },
+  {
+    name: "Premium Atta",
+    category: "atta-flour",
+    price: 285,
+    mrp: 320,
+    unit: "5 kg",
+    stock: 40,
+    imageUrl: placeholderImg("Atta 5kg"),
+    isFeatured: true,
+    isBestSeller: true,
+    rating: 4.3,
+    reviewCount: 128,
+  },
+  {
+    name: "Whole Wheat Flour",
+    category: "atta-flour",
+    price: 240,
+    mrp: 260,
+    unit: "5 kg",
+    stock: 30,
+    imageUrl: placeholderImg("Wheat Flour"),
+  },
+  {
+    name: "Maida",
+    category: "atta-flour",
+    price: 60,
+    mrp: 68,
+    unit: "1 kg",
+    stock: 50,
+    imageUrl: placeholderImg("Maida"),
+  },
   {
     name: "Basmati Rice",
     category: "rice",
