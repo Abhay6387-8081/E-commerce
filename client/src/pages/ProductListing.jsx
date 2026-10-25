@@ -1,37 +1,54 @@
-import { useState, useMemo } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { mockProducts } from '../data/mockProducts';
-import ProductGrid from '../components/product/ProductGrid';
-import ProductFilters from '../components/product/ProductFilters';
-import ProductSort from '../components/product/ProductSort';
-import { useDebounce } from '../hooks/useDebounce';
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import axiosClient from "../api/axiosClient";
+import ProductGrid from "../components/product/ProductGrid";
+import ProductFilters from "../components/product/ProductFilters";
+import ProductSort from "../components/product/ProductSort";
+import { useDebounce } from "../hooks/useDebounce";
 
 function ProductListing() {
   const [searchParams] = useSearchParams();
-  const initialCategory = searchParams.get('category') || '';
-
-  const [category, setCategory] = useState(initialCategory);
+  const [category,setCategory] = useState(searchParams.get('category')||'')
   const [maxPrice, setMaxPrice] = useState(500);
-  const [sort, setSort] = useState('newest');
-  const [search, setSearch] = useState('');
+  const [sort, setSort] = useState("newest");
+  const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 300);
-  const [loading] = useState(false); // real loading state wired in Phase 8
 
-  const filtered = useMemo(() => {
-    let result = [...mockProducts];
 
-    if (category) result = result.filter((p) => p.category === category);
-    if (debouncedSearch) {
-      result = result.filter((p) => p.name.toLowerCase().includes(debouncedSearch.toLowerCase()));
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(()=>{
+    setCategory(searchParams.get('category')||'');
+  },[searchParams])
+
+  useEffect(() => {
+    let ignore = false;
+
+    async function fetchProducts() {
+      setLoading(true);
+      setError("");
+      try {
+        const params = { sort, maxPrice };
+        if (category) params.category = category;
+        if (debouncedSearch) params.search = debouncedSearch;
+
+        const res = await axiosClient.get("/products", { params });
+        if (!ignore) setProducts(res.data.products);
+      } catch {
+        if (!ignore) setError("Could not load products.");
+      } finally {
+        if (!ignore) setLoading(false);
+      }
     }
-    result = result.filter((p) => p.price <= maxPrice);
 
-    if (sort === 'price_asc') result.sort((a, b) => a.price - b.price);
-    else if (sort === 'price_desc') result.sort((a, b) => b.price - a.price);
-    else if (sort === 'popular') result.sort((a, b) => b.reviewCount - a.reviewCount);
-
-    return result;
+    fetchProducts();
+    return () => {
+      ignore = true;
+    };
   }, [category, debouncedSearch, maxPrice, sort]);
+
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
@@ -55,14 +72,28 @@ function ProductListing() {
 
         <div className="flex-1">
           <div className="flex items-center justify-between mb-4">
-            <span className="text-sm text-ink-500">{filtered.length} products</span>
+            <span className="text-sm text-ink-500">
+              {products.length} products
+            </span>
             <ProductSort value={sort} onChange={setSort} />
           </div>
-          <ProductGrid products={filtered} loading={loading} />
+
+          {error ? (
+            <p className="text-sm text-danger py-8 text-center">{error}</p>
+          ) : (
+            <ProductGrid
+              products={products.map(normalizeProduct)}
+              loading={loading}
+            />
+          )}
         </div>
       </div>
     </div>
   );
+}
+
+function normalizeProduct(p) {
+  return { ...p, id: p._id, category: p.category?.slug || p.category };
 }
 
 export default ProductListing;

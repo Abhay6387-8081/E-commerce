@@ -28,6 +28,10 @@ function Checkout() {
     setServerError('');
     setSubmitting(true);
     try {
+      console.log('cart items:',items);
+      console.log('propduct ids:',items.map((i)=>({
+        id:i.id,_id:i._id,qty:i.qty,
+      })))
       const res = await axiosClient.post('/orders', {
         items: items.map((i) => ({ id: i.id, qty: i.qty })),
         shippingAddress: {

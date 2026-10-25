@@ -20,6 +20,9 @@ export function CartProvider({ children }) {
   }, [items]);
 
   function addItem(product, qty = 1) {
+    console.log('product recived',product);
+    console.log('product id:',product.id);
+    console.log('product _id:',product._id);
     setItems((prev) => {
       const existing = prev.find((i) => i.id === product.id);
       if (existing) {

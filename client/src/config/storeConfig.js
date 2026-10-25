@@ -3,7 +3,7 @@
 const storeConfig = {
   storeName: 'Your Store Name',
   tagline: 'Fresh groceries, delivered to your door.',
-  ownerName: 'Your Name',
+  ownerName: '',
   email: 'your.email@example.com',
   phone: 'Your Phone Number',
   address: 'Your Store Address',

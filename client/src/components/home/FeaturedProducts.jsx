@@ -1,8 +1,14 @@
-import { mockProducts } from '../../data/mockProducts';
+import {useEffect,useState} from 'react';
+import axiosClient from '../../api/axiosClient'
 import ProductCard from '../product/ProductCard';
 
-function FeaturedProducts({ title, filterKey }) {
-  const items = mockProducts.filter((p) => p[filterKey]).slice(0, 4);
+function FeaturedProducts({ title,filterKey}) {
+  const [items,setItems] = useState([]);
+
+ useEffect(()=>{
+  axiosClient.get('/products',{params:{[filterKey]:true,limit:4}}).then((res)=>setItems(res.data.products.map((p)=>({...p,id:p._id,category:p.category?.slug||p.category})))).catch(()=>setItems([]));
+ },[filterKey])
+
   if (items.length === 0) return null;
 
   return (

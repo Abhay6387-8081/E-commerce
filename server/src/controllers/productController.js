@@ -6,14 +6,21 @@ export const getProducts = asyncHandler(async (req, res) => {
 
   const filter = { isActive: true };
   
-  // if(isFeatured==='true') filter.isFeatured = true;
-  // if(isBestSeller==='true') filter.isBestSeller = true;
+  if(isFeatured==='true') filter.isFeatured = true;
+  if(isBestSeller==='true') filter.isBestSeller = true;
 
   if (category) {
     const Category = (await import("../models/Category.js")).default;
     const cat = await Category.findOne({ slug: category });
-    if (cat) filter.Category = cat._id;
+    console.log('Recevied slug:',JSON.stringify(category));
+    console.log('Catgeory colloetion:',Category.collection.name);
+    console.log('Databse name:',Category.db.name);
+
+    console.log('DEBUG - category slug recevied:',category);
+    console.log('DEBUG - matched catgeory doc:',cat);
+    if (cat) filter.category = cat._id;
   }
+  console.log('DEBUG - final filter',filter)
   if (search) filter.$text = { $search: search };
   if (maxPrice) filter.price = { $lte: Number(maxPrice) };
 
@@ -52,6 +59,7 @@ export const getProductById = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("Product not found.");
   }
+  res.status(200).json({success:true,product})
 });
 
 export const createProduct = asyncHandler(async (req, res) => {

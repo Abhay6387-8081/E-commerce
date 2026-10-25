@@ -14,6 +14,10 @@ const categorySchema = new mongoose.Schema(
             type:String,
             default:''
         },
+        imageUrl:{
+            type:String,
+            default:'/images/products/placeholder.jpej'
+        }
     },{
         timeseries:true
     }
